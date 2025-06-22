@@ -12,7 +12,7 @@ app.use(express.json())
 app.use('/api/v1/', router)
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('Mongo App is Working!')
+    res.send('Tagit pro is Working!')
 })
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     globalErrorHandler(err, req, res, next)
