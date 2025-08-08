@@ -6,7 +6,6 @@ const userSchema = new Schema<IUser,IUserModel>({
     name:{
         type:String,
         required:true,
-        unique:true
     },
     email:{
         type:String,
@@ -59,10 +58,12 @@ const userOtpSchema = new Schema({
 
 
 
-userSchema.pre('save',async function(next){
-    this.password = await bcrypt.hash(this.password,10)
-    next()
-})
+userSchema.pre('save', async function (next) {
+    if (!this.isModified('password')) return next();
+    this.password = await bcrypt.hash(this.password, 10);
+    next();
+});
+
 
 userSchema.statics.isExitsByCustomId = async function(id:string){
     return await User.findOne({id}).select('+password')

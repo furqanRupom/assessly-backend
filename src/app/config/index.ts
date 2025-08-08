@@ -13,5 +13,8 @@ export default {
     mail_host: process.env.MAIL_HOST || 'smtp.gmail.com',
     mail_port: process.env.MAIL_PORT || 2525,
     mail_user: process.env.MAIL_USER,
-    mail_pass: process.env.MAIL_PASS,
+    mail_pass: process.env.MAIL_PASSWORD,
+    secret_reset_token: process.env.SECRET_RESET_TOKEN,
+    reset_password_expires_in: process.env.RESET_PASSWORD_EXPIRE || '5m',
+    client_url: process.env.CLIENT_URL || 'http://localhost:3000',
 }
