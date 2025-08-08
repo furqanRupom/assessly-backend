@@ -20,3 +20,8 @@ export const tokenVerify = (
 ) => {
     return jwt.verify(encryptedToken, secret) as JwtPayload;
 };
+
+export function generateOtp(length: number = 6): string {
+    let otp = Math.floor(100000 + Math.random() * 900000).toString();
+    return otp;
+}

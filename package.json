@@ -1,5 +1,5 @@
 {
-  "name": "tagit-pro-server",
+  "name": "assessly-server",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -30,6 +30,7 @@
     "mongodb": "^6.16.0",
     "mongoose": "^8.15.0",
     "morgan": "^1.10.0",
+    "nodemailer": "^7.0.5",
     "zod": "^3.25.20"
   },
   "devDependencies": {
@@ -40,6 +41,7 @@
     "@types/express": "^5.0.2",
     "@types/http-status": "^0.2.30",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/nodemailer": "^6.4.17",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
     "eslint": "^9.27.0",

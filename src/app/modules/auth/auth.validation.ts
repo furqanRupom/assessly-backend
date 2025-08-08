@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const registerValidation = z.object({
     body:z.object({
-        username:z.string({
+        name:z.string({
             required_error:'Name is required'
         }),
         email:z.string({
@@ -17,7 +17,7 @@ const registerValidation = z.object({
             message: 'Password must contain at least one letter, one number, and one special character'
         })
         .min(6, 'Password must be at least 6 characters long')
-        .max(32, 'Password must be at most 32 characters long')
+        .max(12, 'Password must be at most 12 characters long')
     })
 })
 export const authValidation = {

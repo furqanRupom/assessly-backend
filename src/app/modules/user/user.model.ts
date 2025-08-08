@@ -3,7 +3,7 @@ import { IUser, IUserModel } from "./user.interface";
 import bcrypt from 'bcrypt'
 
 const userSchema = new Schema<IUser,IUserModel>({
-    username:{
+    name:{
         type:String,
         required:true,
         unique:true
@@ -15,8 +15,8 @@ const userSchema = new Schema<IUser,IUserModel>({
     },
     role:{
         type:String,
-        enum:["admin","moderator","user"],
-        default:"user"
+        enum:["admin","supervisor","student"],
+        default:"student"
     },
     password:{
         type:String,
@@ -30,8 +30,34 @@ const userSchema = new Schema<IUser,IUserModel>({
     isDeleted:{
         type:Boolean,
         default:false
+    },
+    isVerified:{
+        type:Boolean,
+        default:false
     }
 },{timestamps:true})
+
+const userOtpSchema = new Schema({
+    userId: {
+        type: Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+    otp: {
+        type: String,
+        unique: true,
+        required: true
+    },
+    expiresAt: {
+        type: Date,
+        required: true,
+        default: () => new Date(Date.now() + 5 * 60 * 1000),
+        index: { expires: 0 } 
+    }
+},{ timestamps: true });
+
+
+
 
 userSchema.pre('save',async function(next){
     this.password = await bcrypt.hash(this.password,10)
@@ -46,12 +72,11 @@ userSchema.statics.isExitsByEmail = async function(email:string){
     return await User.findOne({email})
 }
 
-userSchema.statics.isExitsByUsername = async function(username:string){
-    return await User.findOne({username})
-}
+
 
 userSchema.statics.isPasswordMatched = async function(inputPassword:string,userPassword:string){
     return await bcrypt.compare(inputPassword,userPassword)
 }
 
 export const User = model<IUser, IUserModel>('User',userSchema)
+export const UserOtp = model('UserOtp', userOtpSchema);
