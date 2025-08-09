@@ -31,7 +31,10 @@ app.use(express.json());
 app.use('/api/v1/', router);
 
 app.get('/', (req: Request, res: Response) => {
-    res.send('Tagit pro is Working!');
+    res.json({
+        message: 'Welcome to Assessly API',
+        version: '1.0.0',
+    });
 });
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
