@@ -2,7 +2,7 @@ import app from './app';
 import mongoose from 'mongoose';
 import config from './app/config';
 import { Server } from 'http';
-import { seedDatabase } from './seed';
+import { seedQuestions } from './seed';
 
 
 let server: Server;
@@ -11,6 +11,8 @@ const main = async () => {
     try {
         const connect = await mongoose.connect(config.database_url as string);
         if (connect) {
+            // seedDatabase();
+            // seedQuestions();
             console.log('successfully connected');
         }
         server = app.listen(config.port, () => {

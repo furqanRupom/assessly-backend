@@ -5,10 +5,10 @@ import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { questionValidation } from './questions.validation';
 
-router.get('/questions', auth('admin'), questionsController.getAllQuestions);
-router.get('/question/:id', auth('admin'), questionsController.getQuestionById);
-router.post('/question', auth('admin'), validateRequest(questionValidation.createQuestion), questionsController.addQuestion);
-router.put('/question/:id', auth('admin'), validateRequest(questionValidation.updateQuestion), questionsController.updateQuestion);
-router.delete('/question/:id', auth('admin'), questionsController.deleteQuestion);
+router.get('/', auth('admin', 'superAdmin'), questionsController.getAllQuestions);
+router.get('/:id', auth('admin', 'superAdmin'), questionsController.getQuestionById);
+router.post('/', auth('admin', 'superAdmin'), validateRequest(questionValidation.createQuestion), questionsController.addQuestion);
+router.put('/:id', auth('admin', 'superAdmin'), validateRequest(questionValidation.updateQuestion), questionsController.updateQuestion);
+router.delete('/:id', auth('admin','superAdmin'), questionsController.deleteQuestion);
 
 export const questionsRoutes = router;

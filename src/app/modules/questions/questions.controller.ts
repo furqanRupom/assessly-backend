@@ -1,5 +1,6 @@
 import BaseController from "../../utils/BaseController";
 import { questionService } from "./questions.services";
+import httpStatus from "http-status";
 
 class Controller extends BaseController {
     getAllQuestions = this.catchAsync(async (req, res) => {

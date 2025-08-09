@@ -7,7 +7,6 @@ import { NextFunction, Request, Response } from 'express';
 import { User } from '../modules/user';
 
 
-
 const auth = (...requiredRoles: IUserType[]) => {
     return async (req:Request, res:Response, next:NextFunction) => {
         const token = req.headers.authorization;
@@ -33,7 +32,7 @@ const auth = (...requiredRoles: IUserType[]) => {
             );
         }
 
-        const { role, id, iat } = decoded;
+        const { role, userId, iat } = decoded;
         if (requiredRoles && !requiredRoles.includes(role)) {
             return next(
                 new AppError(
@@ -43,8 +42,8 @@ const auth = (...requiredRoles: IUserType[]) => {
             );
         }
 
-        const user = await User.findById(id);
-
+        const user = await User.findById(userId)
+      console.log(user)
         if (!user) {
             return next(
                 new AppError(httpStatus.NOT_FOUND, 'The user is not found !')
