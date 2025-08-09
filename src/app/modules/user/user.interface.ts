@@ -5,7 +5,7 @@ export interface IUser {
     name: string,
     email: string,
     password: string
-    role : 'admin' | 'student' | 'supervisor' 
+    role : 'admin' | 'student' | 'supervisor'  | 'superAdmin'
     status : 'active' | 'inactive' | 'banned' | 'blocked'
     isDeleted : boolean
     isVerified : boolean
