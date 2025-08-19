@@ -32,9 +32,14 @@ class Service {
         return user;
     }
 
-    async verifyOtp(payload: { otp: string }) {
+    async verifyOtp(payload: { otp: string,email:string }) {
+        const userData = await User.findOne({ email: payload.email }).select('+password');
+       if (!userData) {
+            throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+        }
         const userOtp = await UserOtp.findOne({
             otp: payload.otp,
+            userId: userData.id,
             expiresAt: { $gt: new Date() },
         });
         if (!userOtp) {

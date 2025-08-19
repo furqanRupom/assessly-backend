@@ -51,7 +51,7 @@ const userOtpSchema = new Schema({
         type: Date,
         required: true,
         default: () => new Date(Date.now() + 5 * 60 * 1000),
-        index: { expires: 0 } 
+        expires:0
     }
 },{ timestamps: true });
 

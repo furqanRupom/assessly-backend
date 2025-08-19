@@ -4,6 +4,7 @@ import { adminService } from './admin.services';
 import auth from '../../middlewares/auth';
 const router = express.Router();
 
+router.get('/users-count', auth('admin', 'superAdmin'), adminController.getAllUsersCount);
 router.get('/admins',auth('admin', 'superAdmin'), adminController.getAllAdmins);
 router.get('/users',auth('admin','superAdmin'), adminController.getAllUsers);
 router.get('/supervisors',auth('admin', 'superAdmin'), adminController.getAllSupervisors);

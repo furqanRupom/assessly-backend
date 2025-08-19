@@ -2,25 +2,36 @@ import QueryBuilder from "../../builder/QueryBuilder";
 import { IUser, User } from "../user";
 
 class Service {
-       async getAllAdmins(query:Record<string, unknown>) {
+    async getAllUsersCount() {
+        const result = await User.find({ isDeleted: false, role: 'user' }).countDocuments();
+        const supervisorsCount = await User.find({ isDeleted: false, role: 'supervisor' }).countDocuments();
+        const adminsCount = await User.find({ isDeleted: false, role: 'admin' }).countDocuments();
+        return {
+            users: result,
+            supervisors: supervisorsCount,
+            admins: adminsCount
+        }
+    }
+    
+    async getAllAdmins(query: Record<string, unknown>) {
         let queryObj = {}
         queryObj = {
             ...query,
             role: "admin"
         }
         const result = new QueryBuilder(User.find(), queryObj)
-        .search(['name', 'email','id'])
-        .filter()
-        .sort()
-        .paginate()
+            .search(['name', 'email', 'id'])
+            .filter()
+            .sort()
+            .paginate()
 
         const meta = await result.countTotal();
         return {
             data: await result.modelQuery,
             meta
         }
-        
-       }
+
+    }
     async getAllUsers(query: Record<string, unknown>) {
         let queryObj = {}
         queryObj = {
@@ -58,7 +69,7 @@ class Service {
         }
     }
 
-    async addAdmin(data:IUser) {
+    async addAdmin(data: IUser) {
         data.role = 'admin';
         data.isVerified = true;
         data.isDeleted = false;

@@ -3,6 +3,15 @@ import { adminService } from "./admin.services";
 import httpStatus from "http-status";
 
 class Controller extends BaseController {
+    getAllUsersCount = this.catchAsync(async (req, res) => {
+        const result = await adminService.getAllUsersCount();
+        this.sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "Users count fetched successfully",
+            data: result
+        })
+    });
     getAllAdmins = this.catchAsync(async (req, res) => {
         const result = await adminService.getAllAdmins(req.query);
         this.sendResponse(res, {
