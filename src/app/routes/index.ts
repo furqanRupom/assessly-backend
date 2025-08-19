@@ -3,13 +3,15 @@ import { authRoutes } from "../modules/auth"
 import { adminRoutes } from "../modules/admin"
 import { questionsRoutes } from "../modules/questions"
 import { assessmentRoutes } from "../modules/assessment"
+import { studentRoutes } from "../modules/student"
 const router = express.Router()
 
 const moduleRoutes = [
     { path: "/auth", route: authRoutes },
     { path: "/admin", route: adminRoutes },
     { path: "/question", route: questionsRoutes },
-    { path: "/assessment", route: assessmentRoutes }
+    { path: "/assessment", route: assessmentRoutes },
+    { path: "/student", route: studentRoutes }
 ]
 
 moduleRoutes.forEach(route => {
