@@ -12,6 +12,33 @@ class Controller extends BaseController {
             data: result
         })
     });
+    getQuestionsPerLevel = this.catchAsync(async (req, res) => {
+        const result = await adminService.getQuestionsPerLevel();
+        this.sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "Questions per level fetched successfully",
+            data: result
+        })
+    });
+    getAssessmentPerLevel = this.catchAsync(async (req, res) => {
+        const result = await adminService.getAssessmentPerLevel();
+        this.sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "Assessments per level fetched successfully",
+            data: result
+        })
+    });
+    getAvgScores = this.catchAsync(async (req, res) => {
+        const result = await adminService.getAvgScores();
+        this.sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "Average scores fetched successfully",
+            data: result
+        })
+    });
     getAllAdmins = this.catchAsync(async (req, res) => {
         const result = await adminService.getAllAdmins(req.query);
         this.sendResponse(res, {

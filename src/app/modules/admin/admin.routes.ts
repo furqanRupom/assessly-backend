@@ -5,6 +5,9 @@ import auth from '../../middlewares/auth';
 const router = express.Router();
 
 router.get('/users-count', auth('admin', 'superAdmin'), adminController.getAllUsersCount);
+router.get('/questions-per-level', auth('admin', 'superAdmin'), adminController.getQuestionsPerLevel);
+router.get('/assessment-per-level', auth('admin', 'superAdmin'), adminController.getAssessmentPerLevel);
+router.get('/avg-scores', auth('admin', 'superAdmin'), adminController.getAvgScores);
 router.get('/admins',auth('admin', 'superAdmin'), adminController.getAllAdmins);
 router.get('/users',auth('admin','superAdmin'), adminController.getAllUsers);
 router.get('/supervisors',auth('admin', 'superAdmin'), adminController.getAllSupervisors);

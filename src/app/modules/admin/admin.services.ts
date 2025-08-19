@@ -1,4 +1,6 @@
 import QueryBuilder from "../../builder/QueryBuilder";
+import { Assessment } from "../assessment";
+import { Question } from "../questions";
 import { IUser, User } from "../user";
 
 class Service {
@@ -12,7 +14,62 @@ class Service {
             admins: adminsCount
         }
     }
-    
+    async getQuestionsPerLevel() {
+        const result = await Question.aggregate([
+            {
+                $group: {
+                    _id: "$level",
+                    count: { $sum: 1 }
+                },
+                $project: {
+                    level: "$_id",
+                    count: 1,
+                    _id: 0
+                }
+            }
+        ])
+        return result;
+    }
+    async getAssessmentPerLevel() {
+        const result = await Assessment.aggregate([
+            {
+                $match: {
+                    certifiedLevel: { $exists: true, $ne: null }
+                },
+                $group: {
+                    _id: "$certifiedLevel",
+                    count: { $sum: 1 }
+                },
+                $project: {
+                    level: "$_id",
+                    count: 1,
+                    _id: 0
+                }
+            }
+        ])
+        return result;
+    }
+    async getAvgScores(){
+        const result = await Assessment.aggregate([
+            {
+                $match:{
+                    completed: true,
+                    certifiedLevel: { $exists:true }
+                },
+                $group: {
+                    _id: "$certifiedLevel",
+                    avg: { $avg: "$score" }
+                },
+                $project: {
+                    level: "$_id",
+                    avg: 1,
+                    _id: 0
+                }
+            }
+        ])
+        return result;
+    }
+
     async getAllAdmins(query: Record<string, unknown>) {
         let queryObj = {}
         queryObj = {
