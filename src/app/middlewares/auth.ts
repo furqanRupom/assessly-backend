@@ -43,7 +43,6 @@ const auth = (...requiredRoles: IUserType[]) => {
         }
 
         const user = await User.findById(userId)
-      console.log(user)
         if (!user) {
             return next(
                 new AppError(httpStatus.NOT_FOUND, 'The user is not found !')

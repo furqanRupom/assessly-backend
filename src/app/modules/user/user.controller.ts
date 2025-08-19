@@ -3,7 +3,7 @@ import httpStatus  from "http-status";
 import { userService } from "./user.service";
 class controller extends BaseController {
     userProfile = this.catchAsync(async(req,res)=>{
-        const user = await userService.userProfile(req.user.id);
+        const user = await userService.userProfile(req.user.userId);
        this.sendResponse(res,{
             statusCode: httpStatus.OK,
             success: true,
