@@ -9,7 +9,7 @@ router.get('/questions-per-level', auth('admin', 'superAdmin'), adminController.
 router.get('/assessment-per-level', auth('admin', 'superAdmin'), adminController.getAssessmentPerLevel);
 router.get('/avg-scores', auth('admin', 'superAdmin'), adminController.getAvgScores);
 router.get('/admins',auth('admin', 'superAdmin'), adminController.getAllAdmins);
-router.get('/users',auth('admin','superAdmin'), adminController.getAllUsers);
+router.get('/students',auth('admin','superAdmin'), adminController.getAllUsers);
 router.get('/supervisors',auth('admin', 'superAdmin'), adminController.getAllSupervisors);
 router.post('/new-admin', auth('admin', 'superAdmin'), adminController.addAdmin);
 router.post('/new-supervisor', auth('admin','superAdmin'), adminController.addSupervisor);

@@ -60,7 +60,7 @@ class QueryBuilder<T> {
         const fields =
             (this?.query?.fields as string)?.split(',')?.join(' ') || '-__v';
 
-        this.modelQuery = this.modelQuery.select(fields);
+        this.modelQuery = this.modelQuery.select(fields + ' -password');
         return this;
     }
     async countTotal() {

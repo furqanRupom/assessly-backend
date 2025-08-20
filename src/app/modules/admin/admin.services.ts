@@ -95,7 +95,7 @@ class Service {
         let queryObj = {}
         queryObj = {
             ...query,
-            role: "user",
+            role: "student",
             isDeleted:false
         }
         const result = new QueryBuilder(User.find(), queryObj)
@@ -103,6 +103,7 @@ class Service {
             .filter()
             .sort()
             .paginate()
+            
 
         const meta = await result.countTotal();
         return {
