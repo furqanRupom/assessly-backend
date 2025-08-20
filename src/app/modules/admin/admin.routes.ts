@@ -13,4 +13,6 @@ router.get('/users',auth('admin','superAdmin'), adminController.getAllUsers);
 router.get('/supervisors',auth('admin', 'superAdmin'), adminController.getAllSupervisors);
 router.post('/new-admin', auth('admin', 'superAdmin'), adminController.addAdmin);
 router.post('/new-supervisor', auth('admin','superAdmin'), adminController.addSupervisor);
+router.put('/update-user/:id',auth('admin','superAdmin'),adminController.updateUser)
+router.delete('/delete-user/:id',auth('admin','superAdmin'),adminController.deleteUser)
 export const adminRoutes = router;

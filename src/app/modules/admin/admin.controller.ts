@@ -88,5 +88,24 @@ class Controller extends BaseController {
             data: result
         })
     })
+
+    updateUser = this.catchAsync(async (req, res) => {
+        const result = await adminService.updateUser(req.body,req.params.id);
+        this.sendResponse(res, {
+            statusCode: httpStatus.CREATED,
+            success: true,
+            message: "User updated successfully",
+            data: result
+        })
+    })
+    deleteUser = this.catchAsync(async (req, res) => {
+        const result = await adminService.deleteUser(req.params.id);
+        this.sendResponse(res, {
+            statusCode: httpStatus.CREATED,
+            success: true,
+            message: "User deleted successfully",
+            data: result
+        })
+    })
 }
 export const adminController = new Controller();

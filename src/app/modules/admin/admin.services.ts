@@ -1,7 +1,8 @@
 import QueryBuilder from "../../builder/QueryBuilder";
+import AppError from "../../errors/AppError";
 import { Assessment } from "../assessment";
 import { Question } from "../questions";
-import { IUser, User } from "../user";
+import { IUser, User, USER_ROLE } from "../user";
 
 class Service {
     async getAllUsersCount() {
@@ -49,12 +50,12 @@ class Service {
         ])
         return result;
     }
-    async getAvgScores(){
+    async getAvgScores() {
         const result = await Assessment.aggregate([
             {
-                $match:{
+                $match: {
                     completed: true,
-                    certifiedLevel: { $exists:true }
+                    certifiedLevel: { $exists: true }
                 },
                 $group: {
                     _id: "$certifiedLevel",
@@ -142,5 +143,28 @@ class Service {
         const supervisor = await User.create(data);
         return supervisor;
     }
+
+    async updateUser(data: IUser, userId: string) {
+        const isUser = await User.findOne({
+            id: userId,
+        })
+        if (!isUser) {
+            throw new AppError(httpStatus.NOT_FOUND, "User not found!")
+        }
+        const result = await User.findByIdAndUpdate(userId, data, { new: true })
+        return result;
+    }
+    async deleteUser(userId: string) {
+        const isUser = await User.findOne({
+            id: userId,
+            isDeleted: false
+        })
+        if (!isUser) {
+            throw new AppError(httpStatus.NOT_FOUND, "User not found!")
+        }
+        await User.findByIdAndUpdate(userId,{isDeleted:true})
+        return null
+    }
+
 }
 export const adminService = new Service();
