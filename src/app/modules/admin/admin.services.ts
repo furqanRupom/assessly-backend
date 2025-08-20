@@ -75,7 +75,8 @@ class Service {
         let queryObj = {}
         queryObj = {
             ...query,
-            role: "admin"
+            role: "admin",
+            isDeleted:false
         }
         const result = new QueryBuilder(User.find(), queryObj)
             .search(['name', 'email', 'id'])
@@ -94,7 +95,8 @@ class Service {
         let queryObj = {}
         queryObj = {
             ...query,
-            role: "user"
+            role: "user",
+            isDeleted:false
         }
         const result = new QueryBuilder(User.find(), queryObj)
             .search(['name', 'email', 'id'])
@@ -112,7 +114,8 @@ class Service {
         let queryObj = {}
         queryObj = {
             ...query,
-            role: "supervisor"
+            role: "supervisor",
+            isDeleted:false
         }
         const result = new QueryBuilder(User.find(), queryObj)
             .search(['name', 'email', 'id'])
