@@ -3,6 +3,7 @@ import AppError from "../../errors/AppError";
 import { Assessment } from "../assessment";
 import { Question } from "../questions";
 import { IUser, User, USER_ROLE } from "../user";
+import httpStatus from "http-status";
 
 class Service {
     async getAllUsersCount() {
@@ -158,15 +159,16 @@ class Service {
         const result = await User.findByIdAndUpdate(userId, data, { new: true })
         return result;
     }
-    async deleteUser(userId: string) {
-        const isUser = await User.findOne({
-            id: userId,
-            isDeleted: false
-        })
-        if (!isUser) {
+    async deleteUser(id: string) {
+     
+        const user = await User.findById(id)
+        if(!user){
             throw new AppError(httpStatus.NOT_FOUND, "User not found!")
         }
-        await User.findByIdAndUpdate(userId,{isDeleted:true})
+        if (user.isDeleted) {
+            throw new AppError(httpStatus.NOT_FOUND, "User already deleted!")
+        }
+        await User.findByIdAndUpdate(id,{isDeleted:true})
         return null
     }
     async getDailyUserRegistrations(days: number = 30) {
