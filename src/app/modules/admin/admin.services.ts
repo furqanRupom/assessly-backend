@@ -169,6 +169,84 @@ class Service {
         await User.findByIdAndUpdate(userId,{isDeleted:true})
         return null
     }
+    async getDailyUserRegistrations(days: number = 30) {
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - days);
+
+        const result = await User.aggregate([
+            {
+                $match: {
+                    createdAt: { $gte: startDate },
+                    isDeleted: false,
+                    $in: ['student', 'admin', 'supervisor']
+                }
+            },
+            {
+                $group: {
+                    _id: {
+                        $dateToString: {
+                            format: "%Y-%m-%d",
+                            date: "$createdAt"
+                        }
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    date: "$_id",
+                    count: 1,
+                    _id: 0
+                }
+            },
+            {
+                $sort: { date: 1 }
+            }
+        ]);
+
+        return result;
+    }
+
+    async getUserRegistrationStats() {
+        const today = new Date();
+        const startOfToday = new Date(today.setHours(0, 0, 0, 0));
+        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+        const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+        const [todayCount, weekCount, monthCount, totalCount] = await Promise.all([
+            User.countDocuments({
+                createdAt: { $gte: startOfToday },
+                isDeleted: false,
+                role: {
+                    $in:['student','admin','supervisor']
+                }
+            }),
+
+            User.countDocuments({
+                createdAt: { $gte: startOfWeek },
+                isDeleted: false,
+                $in: ['student', 'admin', 'supervisor']
+            }),
+
+            User.countDocuments({
+                createdAt: { $gte: startOfMonth },
+                isDeleted: false,
+                $in: ['student', 'admin', 'supervisor']
+            }),
+
+            User.countDocuments({
+                isDeleted: false,
+                $in: ['student', 'admin', 'supervisor']
+            })
+        ]);
+
+        return {
+            today: todayCount,
+            thisWeek: weekCount,
+            thisMonth: monthCount,
+            total: totalCount
+        };
+    }
 
 }
 export const adminService = new Service();

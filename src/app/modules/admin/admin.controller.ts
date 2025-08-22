@@ -107,5 +107,27 @@ class Controller extends BaseController {
             data: result
         })
     })
+
+     getDailyUserRegistrations = this.catchAsync(async (req, res) => {
+        const { days = 30 } = req.query;
+        const result = await adminService.getDailyUserRegistrations(Number(days));
+        this.sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "Daily user registrations retrieved successfully",
+            data: result
+        });
+    });
+
+     getUserRegistrationStats = this.catchAsync(async (req, res) => {
+        const result = await adminService.getUserRegistrationStats();
+        this.sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "User registration statistics retrieved successfully",
+            data: result
+        });
+    });
+
 }
 export const adminController = new Controller();

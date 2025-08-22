@@ -2,6 +2,7 @@ import express from 'express';
 import { adminController } from './admin.controller';
 import { adminService } from './admin.services';
 import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../user';
 const router = express.Router();
 
 router.get('/users-count', auth('admin', 'superAdmin'), adminController.getAllUsersCount);
@@ -15,4 +16,15 @@ router.post('/new-admin', auth('admin', 'superAdmin'), adminController.addAdmin)
 router.post('/new-supervisor', auth('admin','superAdmin'), adminController.addSupervisor);
 router.put('/update-user/:id',auth('admin','superAdmin'),adminController.updateUser)
 router.delete('/delete-user/:id',auth('admin','superAdmin'),adminController.deleteUser)
+router.get(
+    '/user-registrations/daily',
+    auth(USER_ROLE.admin,USER_ROLE.superAdmin),
+    adminController.getDailyUserRegistrations
+);
+
+router.get(
+    '/user-registrations/stats',
+    auth(USER_ROLE.admin, USER_ROLE.superAdmin),
+    adminController.getUserRegistrationStats
+);
 export const adminRoutes = router;
