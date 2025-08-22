@@ -6,11 +6,11 @@ import { IUser, User, USER_ROLE } from "../user";
 
 class Service {
     async getAllUsersCount() {
-        const result = await User.find({ isDeleted: false, role: 'user' }).countDocuments();
+        const result = await User.find({ isDeleted: false, role: 'student' }).countDocuments();
         const supervisorsCount = await User.find({ isDeleted: false, role: 'supervisor' }).countDocuments();
         const adminsCount = await User.find({ isDeleted: false, role: 'admin' }).countDocuments();
         return {
-            users: result,
+            students: result,
             supervisors: supervisorsCount,
             admins: adminsCount
         }
@@ -178,7 +178,7 @@ class Service {
                 $match: {
                     createdAt: { $gte: startDate },
                     isDeleted: false,
-                    $in: ['student', 'admin', 'supervisor']
+                    role: { $in: ['student', 'admin', 'supervisor'] } // Correct usage
                 }
             },
             {
@@ -210,34 +210,36 @@ class Service {
     async getUserRegistrationStats() {
         const today = new Date();
         const startOfToday = new Date(today.setHours(0, 0, 0, 0));
-        const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay()));
+        today.setDate(today.getDate() - today.getDay()); // Reset for week calculation
+        const startOfWeek = new Date(today);
         const startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 
+        const matchStage = {
+            isDeleted: false,
+            role: { $in: ['student', 'admin', 'supervisor'] }
+        };
+
         const [todayCount, weekCount, monthCount, totalCount] = await Promise.all([
+            // Today's registrations
             User.countDocuments({
-                createdAt: { $gte: startOfToday },
-                isDeleted: false,
-                role: {
-                    $in:['student','admin','supervisor']
-                }
+                ...matchStage,
+                createdAt: { $gte: startOfToday }
             }),
 
+            // This week's registrations
             User.countDocuments({
-                createdAt: { $gte: startOfWeek },
-                isDeleted: false,
-                $in: ['student', 'admin', 'supervisor']
+                ...matchStage,
+                createdAt: { $gte: startOfWeek }
             }),
 
+            // This month's registrations
             User.countDocuments({
-                createdAt: { $gte: startOfMonth },
-                isDeleted: false,
-                $in: ['student', 'admin', 'supervisor']
+                ...matchStage,
+                createdAt: { $gte: startOfMonth }
             }),
 
-            User.countDocuments({
-                isDeleted: false,
-                $in: ['student', 'admin', 'supervisor']
-            })
+            // Total registrations
+            User.countDocuments(matchStage)
         ]);
 
         return {
