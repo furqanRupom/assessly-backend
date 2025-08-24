@@ -35,6 +35,15 @@ class Controller extends BaseController {
             data: result
         });
     });
+    getAssessment = this.catchAsync(async(req,res)=> {
+        const result = await assessmentService.getAssessment(req.params.id);
+        this.sendResponse(res,{
+            statusCode:httpStatus.OK,
+            success:true,
+            message:"Fetched assessment successfully!",
+            data:result
+        })
+    })
 
     getStudentResults = this.catchAsync(async (req, res) => {
         const studentId = req.user._id;

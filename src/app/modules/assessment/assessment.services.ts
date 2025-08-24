@@ -108,6 +108,13 @@ class Service {
             }
         };
     }
+    async getAssessment(assessmentId:string){
+        const assessment = await Assessment.findById(assessmentId);
+        if(!assessment){
+            throw new AppError(httpStatus.NOT_FOUND,"Assessment not found!")
+        }
+        return assessment;
+    }
 
     async getStudentResults(studentId: string) {
         return await Assessment.find({ student: studentId })
