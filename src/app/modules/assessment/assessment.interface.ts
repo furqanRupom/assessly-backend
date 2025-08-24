@@ -10,4 +10,5 @@ export interface IAssessment extends Document {
     completed: boolean;
     score: number;
     certifiedLevel?: string;
+    timeSpent:number
 }

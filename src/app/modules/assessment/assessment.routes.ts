@@ -23,7 +23,7 @@ router.post(
 router.get("/", auth("admin", "superAdmin"), assessmentController.getAllAssessments);
 router.get("/:id",auth('admin','superAdmin','student','supervisor'),assessmentController.getAssessment)
 
-
+router.get("/questions/:id", auth('admin', 'superAdmin', 'student', 'supervisor'), assessmentController.getQuestionsByAssessment)
 router.get(
     "/results",
     auth("student"),

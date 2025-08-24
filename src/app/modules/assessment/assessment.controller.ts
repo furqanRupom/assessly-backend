@@ -35,6 +35,16 @@ class Controller extends BaseController {
             data: result
         });
     });
+
+    getQuestionsByAssessment = this.catchAsync(async(req,res)=> {
+        const result = await assessmentService.getQuestionsByAssessment(req.params.id);
+        this.sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: "Fetched assessment successfully!",
+            data: result
+        })
+    })
     getAssessment = this.catchAsync(async(req,res)=> {
         const result = await assessmentService.getAssessment(req.params.id);
         this.sendResponse(res,{

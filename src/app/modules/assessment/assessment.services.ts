@@ -68,21 +68,36 @@ class Service {
         const scorePercent = (correctCount / session.questions.length) * 100;
         const level = getCertificationLevel(session.step, scorePercent);
 
+        // Calculate time spent in seconds
+        const startTime = session.startTime;
+        const endTime = new Date();
+        const timeSpent = Math.floor((endTime.getTime() - startTime.getTime()) / 1000);
+
         session.answers = answers;
         session.score = scorePercent;
         session.certifiedLevel = level;
         session.completed = true;
-        session.endTime = new Date();
+        session.endTime = endTime;
+        session.timeSpent = timeSpent; // Add this field to your schema
 
         await session.save();
 
         return {
             score: scorePercent,
             certifiedLevel: level,
+            totalQuestions: session.questions.length,
+            correctAnswers: correctCount,
+            timeSpent: timeSpent, // Include time spent in response
             proceedToNextStep:
                 (session.step === 1 && scorePercent >= 75) ||
                 (session.step === 2 && scorePercent >= 75)
         };
+    }
+
+    async getQuestionsByAssessment(assessmentId: string) {
+        const assessment = await Assessment.findById(assessmentId).populate('questions');
+        console.log(assessment)
+        return assessment;
     }
 
     async getAllAssessments(query: Record<string, unknown>) {
@@ -108,10 +123,10 @@ class Service {
             }
         };
     }
-    async getAssessment(assessmentId:string){
+    async getAssessment(assessmentId: string) {
         const assessment = await Assessment.findById(assessmentId);
-        if(!assessment){
-            throw new AppError(httpStatus.NOT_FOUND,"Assessment not found!")
+        if (!assessment) {
+            throw new AppError(httpStatus.NOT_FOUND, "Assessment not found!")
         }
         return assessment;
     }

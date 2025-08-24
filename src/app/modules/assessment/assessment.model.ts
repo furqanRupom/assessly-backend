@@ -19,6 +19,7 @@ const assessmentSchema = new Schema<IAssessment>(
         completed: { type: Boolean, default: false },
         score: { type: Number, default: 0 },
         certifiedLevel: { type: String },
+        timeSpent:{type:Number}
     },
     { timestamps: true }
 );
