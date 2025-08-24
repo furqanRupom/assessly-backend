@@ -96,7 +96,6 @@ class Service {
 
     async getQuestionsByAssessment(assessmentId: string) {
         const assessment = await Assessment.findById(assessmentId).populate('questions');
-        console.log(assessment)
         return assessment;
     }
 
